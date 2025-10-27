@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./index.css";
+import { useEffect } from "react"; // useEffect import
+import Header from "./components/layout/Header";
+import LeftPanel from "./components/layout/LeftPanel";
+import CenterPanel from "./components/layout/CenterPanel";
+import RightPanel from "./components/layout/RightPanel";
+import Footer from "./components/layout/Footer";
+import { useChartStore } from "./components/store/useChartStore"; // "대뇌" import
+import AudioPlayer from "./components/core/AudioPlayer";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const loadAudio = useChartStore((state) => state.loadAudio);
+
+  // 👇👇👇 앱이 처음 켜질 때 딱 한 번 실행! 👇👇👇
+  useEffect(() => {
+    // "대뇌"에게 "이 음악 로드해줘!"라고 명령
+    loadAudio("/music/mysong.wav");
+  }, [loadAudio]); // (loadAudio는 절대 변하지 않으니 안심!)
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="flex flex-col h-screen" data-theme="dark">
+      {/* "심장"을 여기에 뿅! (눈에 안 보이지만 작동 시작!) */}
+      <AudioPlayer />
+
+      <Header />
+      <main className="flex-1 flex overflow-hidden">
+        {/* (이하 동일) */}
+        <LeftPanel />
+        <CenterPanel />
+        <RightPanel />
+      </main>
+      <Footer />
+    </div>
+  );
 }
 
-export default App
+export default App;
